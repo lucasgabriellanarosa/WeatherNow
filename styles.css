@@ -1,5 +1,29 @@
+/* Fonts */
+@font-face {
+    font-family: Anta;
+    src: url(/fonts/Anta-Regular.ttf);
+}
+
+/* CSS Reset */
 *{
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    color: white;
+    font-family: Anta;
+    font-weight: lighter;
+}
+
+li{
+    list-style: none;
+}
+
+/* Main */
+main{
+    min-height: 100vh;
+    width: 100%;
+    background-image: linear-gradient(90deg, #001A84, #02001C);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
