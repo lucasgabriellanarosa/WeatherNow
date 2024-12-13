@@ -27,8 +27,10 @@ main{
     flex-direction: column;
     align-items: center;
     padding: 1rem 0;
+    gap: .5rem;
 }
 
+/* Search_section */
 .search_section{
     display: flex;
     flex-direction: column;
@@ -59,4 +61,31 @@ main{
 
 .search_section i{
     font-size: 1.75rem;
+}
+
+/* Info_section */
+.info_section{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.info_section div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.info_section .top_info{
+    flex-direction: column;
+    font-size: 1.25rem;
+}
+
+.info_section .bottom_info{
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.4);
+    align-items: start;
+    padding: 1rem;
+    font-size: 1.2rem;
 }
