@@ -60,7 +60,7 @@ main{
 }
 
 .search_section i{
-    font-size: 1.75rem;
+    font-size: 1.5rem;
 }
 
 /* Info_section */
@@ -96,7 +96,7 @@ main{
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: .75rem;
+    gap: 1rem;
     padding-top: 5rem;
 }
 
@@ -107,5 +107,10 @@ main{
     align-items: center;
     background-color: #1E1E1E;
     border-radius: 10px;
+    padding: 0 .5rem;
     padding-bottom: 1rem;
+}
+
+.forecast_section img{
+    width: 75px;
 }

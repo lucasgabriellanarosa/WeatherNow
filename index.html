@@ -18,7 +18,8 @@
                 WeatherNow
             </h1>
             <div>
-                <input type="text">
+                <input id="searchQuery" type="text">
+                <i id="searchBtn" class="fa-solid fa-magnifying-glass"></i>
                 <i class="fa-solid fa-location-dot"></i>
             </div>
         </section>
@@ -28,15 +29,14 @@
                 <img src="https://openweathermap.org/img/wn/01n@2x.png">
                 
                 <div class="top_info">
-                    <p>Céu Limpo, Qui</p>
-                    <p>3°C - 23:30 UTC</p>
+                    <p id="info_temp_city">3°C - Itanhomi</p>
                 </div>                
 
             </div>
 
             <div class="bottom_info">
-                <p>Humidade: 90%</p>
-                <p>Velocidade do Vento: 2.24km</p>
+                <p id="info_humidity">Humidade: 90%</p>
+                <p id="info_wind">Velocidade do Vento: 2.24km/h</p>
             </div>
         </section>
 
