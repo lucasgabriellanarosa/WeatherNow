@@ -30,6 +30,10 @@ main{
     gap: .5rem;
 }
 
+.weatherIcon{
+    width: 75px;
+}
+
 /* Search_section */
 .search_section{
     display: flex;
@@ -105,12 +109,11 @@ main{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    text-align: center;
     background-color: #1E1E1E;
     border-radius: 10px;
     padding: 0 .5rem;
     padding-bottom: 1rem;
 }
 
-.forecast_section img{
-    width: 75px;
-}
+
