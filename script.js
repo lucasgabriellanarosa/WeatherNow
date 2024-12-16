@@ -23,6 +23,9 @@ const forecastDayTwoImg = document.getElementById("forecast_dayTwo_img")
 const forecastDayThree = document.getElementById("forecast_dayThree")
 const forecastDayThreeImg = document.getElementById("forecast_dayThree_img")
 
+
+const dataSection = document.getElementById("data_section")
+
 // Get the background color by the weather
 const getBackground = (weather) => {
     console.log(weather)
@@ -39,9 +42,6 @@ const getBackground = (weather) => {
         case 'Snow':
             mainContainer.style.backgroundImage = `linear-gradient(90deg, lightblue, rgb(127, 180, 197))`
             break;
-        case 'Atmosphere':
-            mainContainer.style.backgroundImage = `linear-gradient(90deg, rgb(34, 34, 34), black)`
-            break;
         case 'Clear':
             mainContainer.style.backgroundImage = `linear-gradient(90deg, #001A84, #B85C00)`
             break;
@@ -50,19 +50,47 @@ const getBackground = (weather) => {
             break;
 
         default:
+            mainContainer.style.backgroundImage = `linear-gradient(90deg, rgb(48, 48, 48), black)`
             break;
     }
-
 }
 
 // Insert the data got from the API into the website (info section)
 const insertInfo = (data) => {
-    infoImg.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`
-    tempCityInfo.innerText = data.main.temp + "°C - " + data.name
-    humidityInfo.innerText = `Humidade: ` + data.main.humidity + `%`
-    windInfo.innerText = `Velocidade do Vento: ` + data.wind.speed + 'm/s'
+    getBackground(data.list[0].weather[0].main)
+    dataSection.innerHTML = `
+        <section class="info_section">
+        <div>
+            <img id="info_img" class="weatherIcon" src="https://openweathermap.org/img/wn/${data.list[0].weather[0].icon}.png">
 
-    getBackground(data.weather[0].main)
+            <div class="top_info">
+                <p id="info_temp_city">${data.list[0].main.temp}°C - ${data.city.name}</p>
+                <p id="info_date"></p>
+            </div>
+
+        </div>
+
+        <div class="bottom_info">
+            <p id="info_humidity">Humidade: ${data.list[0].main.humidity}%</p>
+            <p id="info_wind">Velocidade do Vento: ${data.list[0].wind.speed}m/s</p>
+        </div>
+    </section>
+
+    <ul class="forecast_section">
+        <li>
+            <img class="weatherIcon" id="forecast_dayOne_img" src="https://openweathermap.org/img/wn/${data.list[8].weather[0].icon}.png">
+            <p id="forecast_dayOne">${data.list[8].dt_txt.replace(/\s\d{1,2}:\d{2}:\d{2}/, '')} <br>${data.list[8].main.temp}</p>
+        </li>
+        <li>
+            <img class="weatherIcon" id="forecast_dayTwo_img" src="https://openweathermap.org/img/wn/${data.list[16].weather[0].icon}.png">
+            <p id="forecast_dayTwo">${data.list[16].dt_txt.replace(/\s\d{1,2}:\d{2}:\d{2}/, '')} <br>${data.list[16].main.temp}</p>
+        </li>
+        <li>
+            <img class="weatherIcon" id="forecast_dayThree_img" src="https://openweathermap.org/img/wn/${data.list[24].weather[0].icon}.png">
+            <p id="forecast_dayThree">${data.list[24].dt_txt.replace(/\s\d{1,2}:\d{2}:\d{2}/, '')} <br>${data.list[24].main.temp}</p>
+        </li>
+    </ul>
+    `
 }
 
 // Get the user location when he start using the website
@@ -76,7 +104,6 @@ const getUserLocation = () => {
                 .then(res => res.json())
                 .then(data => {
                     getForecast(data.name)
-                    insertInfo(data)
                 })
         }
     );
@@ -85,32 +112,12 @@ const getUserLocation = () => {
 
 // Forecast for the next days
 const getForecast = (cityName) => {
+    setIsLoading("true")
     fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&cnt=25&units=metric&appid=${KEY}`)
         .then(res => res.json())
         .then(data => {
-            for (let i = 0; i < data.list.length; i += 8) {
-                const forecastImgURL = `https://openweathermap.org/img/wn/${data.list[i].weather[0].icon}.png`
-                const forecastInnerHTML = `${data.list[i].dt_txt.replace(/\s\d{1,2}:\d{2}:\d{2}/, '')} <br>${data.list[i].main.temp}`;
-                switch (i) {
-                    case 0:
-                        dateInfo.innerText = `${data.list[i].dt_txt.replace(/\s\d{1,2}:\d{2}:\d{2}/, '')}`
-                        break;
-                    case 8:
-                        forecastDayOneImg.src = forecastImgURL
-                        forecastDayOne.innerHTML = forecastInnerHTML
-                        break;
-                    case 16:
-                        forecastDayTwoImg.src = forecastImgURL
-                        forecastDayTwo.innerHTML = forecastInnerHTML
-                        break;
-                    case 24:
-                        forecastDayThreeImg.src = forecastImgURL
-                        forecastDayThree.innerHTML = forecastInnerHTML
-                        break;
-                    default:
-                        break;
-                }
-            }
+            console.log(data)
+            setIsLoading("false", data)
         })
 }
 
@@ -120,18 +127,33 @@ searchBtn.addEventListener("click", () => {
 
     const queryValue = searchQuery.value
     console.log("Procurando por: " + queryValue)
+    getForecast(queryValue)
 
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${queryValue}&units=metric&appid=${KEY}`)
-        .then(res => res.json())
-        .then(data => {
-            insertInfo(data)
-            getForecast(queryValue)
-        })
 })
+
+let isLoading = true
+
+const setIsLoading = (trueOrFalse, data) => {
+    isLoading = trueOrFalse === "true";
+    checkLoading(data)
+}
+
+const checkLoading = (data) => {
+    if (isLoading) {
+        console.log('loading data')
+        dataSection.innerHTML = `
+        <h1>Carregando...</h1>
+        `
+    } else {
+        console.log('data loaded')
+        insertInfo(data)
+    }
+}
 
 
 // Function to start the application
 const initApp = () => {
+    checkLoading(isLoading)
     getUserLocation()
 }
 
