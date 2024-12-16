@@ -28,7 +28,6 @@ const dataSection = document.getElementById("data_section")
 
 // Get the background color by the weather
 const getBackground = (weather) => {
-    console.log(weather)
     switch (weather) {
         case 'Thunderstorm':
             mainContainer.style.backgroundImage = `linear-gradient(90deg, #B7A807, #B85C00)`
@@ -105,6 +104,16 @@ const getUserLocation = () => {
                 .then(data => {
                     getForecast(data.name)
                 })
+        },
+        (error) => {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("Você negou o acesso à localização. Não podemos fornecer o clima local.");
+                    break;
+                default:
+                    alert("Ocorreu um erro desconhecido.");
+                    break;
+            }
         }
     );
 }
@@ -112,23 +121,30 @@ const getUserLocation = () => {
 
 // Forecast for the next days
 const getForecast = (cityName) => {
-    setIsLoading("true")
     fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&cnt=25&units=metric&appid=${KEY}`)
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) {
+                alert("Cidade não encontrada!")
+                throw new Error(`Erro: ${res.status} - ${res.statusText || "Cidade não encontrada"}`);
+            }
+            setIsLoading("true");
+            return res.json();
+        })
         .then(data => {
-            console.log(data)
-            setIsLoading("false", data)
+            setIsLoading("false", data); 
         })
 }
 
 
 // Search function
 searchBtn.addEventListener("click", () => {
-
     const queryValue = searchQuery.value
-    console.log("Procurando por: " + queryValue)
-    getForecast(queryValue)
 
+    if (queryValue == ``) {
+        alert("É necessário escrever o nome de alguma cidade!")
+    } else {
+        getForecast(queryValue)
+    }
 })
 
 let isLoading = true
@@ -140,12 +156,10 @@ const setIsLoading = (trueOrFalse, data) => {
 
 const checkLoading = (data) => {
     if (isLoading) {
-        console.log('loading data')
         dataSection.innerHTML = `
         <h1>Carregando...</h1>
         `
     } else {
-        console.log('data loaded')
         insertInfo(data)
     }
 }
