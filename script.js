@@ -14,6 +14,7 @@ const tempCityInfo = document.getElementById("info_temp_city")
 const dateInfo = document.getElementById("info_date")
 const humidityInfo = document.getElementById("info_humidity")
 const windInfo = document.getElementById("info_wind")
+const weatherCondition = document.getElementById("weather_condition")
 
 // FORECAST
 const forecastDayOne = document.getElementById("forecast_dayOne")
@@ -60,11 +61,14 @@ const insertInfo = (data) => {
     dataSection.innerHTML = `
         <section class="info_section">
         <div>
+            <div class="weather_info">
             <img id="info_img" class="weatherIcon" src="https://openweathermap.org/img/wn/${data.list[0].weather[0].icon}.png">
+            <p class="weather_condition" id="weather_condition">${data.list[0].weather[0].main}</p>
+            </div>
 
             <div class="top_info">
                 <p id="info_temp_city">${data.list[0].main.temp}°C - ${data.city.name}</p>
-                <p id="info_date"></p>
+                <p id="info_date">${data.list[0].dt_txt.replace(/\s\d{1,2}:\d{2}:\d{2}/, '')}</p>
             </div>
 
         </div>
@@ -108,7 +112,10 @@ const getUserLocation = () => {
         (error) => {
             switch (error.code) {
                 case error.PERMISSION_DENIED:
-                    alert("Você negou o acesso à localização. Não podemos fornecer o clima local.");
+                    alert("Você negou o acesso à localização. Não podemos fornecer o clima local automaticamente.");
+                    dataSection.innerHTML = `
+                    <p>Ative sua localização para receber um feedback automático de sua cidade ao entrar no app!</p>
+                    `
                     break;
                 default:
                     alert("Ocorreu um erro desconhecido.");
@@ -131,7 +138,8 @@ const getForecast = (cityName) => {
             return res.json();
         })
         .then(data => {
-            setIsLoading("false", data); 
+            console.log(data)
+            setIsLoading("false", data);
         })
 }
 

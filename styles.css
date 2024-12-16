@@ -32,7 +32,7 @@ main{
 }
 
 .weatherIcon{
-    width: 75px;
+    width: clamp(75px, 15vw, 100px);
 }
 
 /* Search_section */
@@ -45,7 +45,7 @@ main{
 }
 
 .search_section h1{
-    font-size: 2rem;
+    font-size: clamp(2rem, 10vw, 4rem);
 }
 
 .search_section div{
@@ -61,11 +61,13 @@ main{
     font-size: 1rem;
     border-radius: 25px;
     border: none;
-    padding: .5rem .75rem;
+    padding: .35rem .5rem;
+    width: clamp(200px, 50vw, 350px);
 }
 
 .search_section i{
     font-size: 1.5rem;
+    cursor: pointer;
 }
 
 /* Info_section */
@@ -84,7 +86,7 @@ main{
 
 .info_section .top_info{
     flex-direction: column;
-    font-size: 1.1rem;
+    font-size: clamp(10px, 5vw, 1.5rem);
 }
 
 .info_section .bottom_info{
@@ -92,7 +94,20 @@ main{
     background-color: rgba(255, 255, 255, 0.4);
     align-items: start;
     padding: 1rem;
-    font-size: 1rem;
+    font-size: clamp(10px, 5vw, 1.2rem);
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    margin-top: 1rem;
+}
+
+.weather_info{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.weather_condition{
+    font-size: clamp(10px, 5vw, 1.2rem);
 }
 
 /* Forecast_section */
@@ -115,7 +130,7 @@ main{
     border-radius: 10px;
     padding: 0 .5rem;
     padding-bottom: 1rem;
-    font-size: small;
+    font-size: clamp(10px, 4vw, 1rem);
 }
 
 
